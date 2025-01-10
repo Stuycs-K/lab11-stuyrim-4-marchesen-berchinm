@@ -43,7 +43,7 @@ Make a clear list of features that work/dont work
 
 ### Sword Warrior
 
-Trips on a rock fairly often
+*Trips on a rock fairly often; not the most trained of fighters*
 
 **Attack**: Slice - deals 4-5 or 8-9 damage (20% crit rate)
 
