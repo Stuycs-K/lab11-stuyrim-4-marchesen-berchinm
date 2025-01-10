@@ -3,7 +3,7 @@
 
 ## Features
 
-Make a clear list of features that work/dont work
+Make a clear list of features that work/don't work
 
 :white_check_mark: This feature works.
 
@@ -26,4 +26,14 @@ Make a clear list of features that work/dont work
 
 ## Adventurer Subclasses
 
-replace this with your documentation for your two Adventurer subclasses. If you modify or replace the provided CodeWarrior class, please provide documentation for that as well.
+### Crossbow Warrior
+
+**Attack**: Bowshot - 0 damage (10% chance) or 4-7 damage (90% chance)
+
+**Special**: Focus
+
+**SpecialAttack**: Headshot - 0 damage (15% chance) or 12-18 damage (85% chance)
+
+**Support**: Eat a carrot
+
+**Support Other**: Give a carrot to someone else
