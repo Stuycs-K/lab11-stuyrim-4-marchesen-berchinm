@@ -37,12 +37,20 @@ Make a clear list of features that work/dont work
 
 
 
+
+
+
+
 ### Sword Warrior
 
-All 
+Trips on a rock fairly often
 
 **Attack**: Slice - deals 4-5 or 8-9 damage (20% crit rate)
+
 **Special Resource**: Energy
+
 **Special Attack**: Monster Slice - deals 0-1 or 20-21 damage (50% crit rate) (5 energy)
+
 **Support**: Eat Pie - gains 2-3 health, 2-3 energy
+
 **Support Other**: Throw Pie - gives -1 or 2-3 health, -1 or 2-3 energy (77% crit rate)
