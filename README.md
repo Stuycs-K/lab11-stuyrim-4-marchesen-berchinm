@@ -26,10 +26,11 @@ Make a clear list of features that work/don't work
 
 ## Adventurer Subclasses
 
+
 ### Crossbow Warrior
 
 **Attack**: Bowshot - 0 damage (10% chance) or 4-7 damage (90% chance)
-
+s
 **Special**: Focus
 
 **SpecialAttack**: Headshot - 0 damage (15% chance) or 12-18 damage (85% chance)
@@ -37,3 +38,22 @@ Make a clear list of features that work/don't work
 **Support**: Eat a carrot
 
 **Support Other**: Give a carrot to someone else
+
+
+
+
+
+### Sword Warrior
+
+*Trips on a rock fairly often; not the most trained of fighters*
+
+**Attack**: Slice - deals 4-5 or 8-9 damage (20% crit rate)
+
+**Special Resource**: Energy
+
+**Special Attack**: Monster Slice - deals 0-1 or 20-21 damage (50% crit rate) (5 energy)
+
+**Support**: Eat Pie - gains 2-3 health, 2-3 energy
+
+**Support Other**: Throw Pie - gives -1 or 2-3 health, -1 or 2-3 energy (77% crit rate)
+
