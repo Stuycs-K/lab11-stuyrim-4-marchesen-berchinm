@@ -38,10 +38,24 @@ public class SwordWarrior extends Adventurer{
 
     other.applyDamage(damage);
 
-    return (getName() + " sliced " + other.getName() + " for " + d + " damage!");
+    return (getName() + " sliced " + other.getName() + " for " + damage + " damage!");
   }
 
+  // deals 0 or 20 damage with equal odds
   public String specialAttack(Adventurer other){
+    if (energy < 5){return (getName() + " doesn't have enough energy for the special attack!");}
+
+    int rng = (int)(2 * Math.random());
+    boolean crit = false;
+    if (rng == 1) crit = true;
+
+    int damage = 0;
+    if (crit = true){damage += 20;}
+
+    other.applyDamage(damage);
+
+    if (crit){return (getName() + " took a HUGE swing at " + other.getName() + " and landed it for 20 damage!");}
+    return (getName() + " took a HUGE swing at " + other.getName() + " and missed completely!")
 
   }
 
