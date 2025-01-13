@@ -56,6 +56,10 @@ public abstract class Adventurer{
     this.HP -= amount;
   }
 
+  public void applyHeal(int amount){
+    this.HP += amount;
+  }
+
   //You did it wrong if this happens.
   public Adventurer(){
     this("Lester-the-noArg-constructor-string");
