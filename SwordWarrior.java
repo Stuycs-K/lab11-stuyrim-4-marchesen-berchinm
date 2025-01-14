@@ -8,7 +8,7 @@ public class SwordWarrior extends Adventurer{
   public SwordWarrior(String name){
     super(name, 30); // 30 hp
     energy = 3; // starting energy 3
-    energyMax = 7; // max energy 7
+    maxEnergy = 7; // max energy 7
   }
 
   public String getSpecialName(){
@@ -44,6 +44,7 @@ public class SwordWarrior extends Adventurer{
   // takes a HUGE swing. deals 0 or 20 damage with equal odds
   public String specialAttack(Adventurer other){
     if (energy < 5){return (getName() + " doesn't have enough energy for a special attack!");}
+    else{energy -= 5;}
 
     int rng = (int)(2 * Math.random());
     boolean crit = false;
@@ -55,7 +56,7 @@ public class SwordWarrior extends Adventurer{
     other.applyDamage(damage);
 
     if (crit){return (getName() + " took a HUGE swing at " + other.getName() + " and landed it for 20 damage!");}
-    return (getName() + " took a HUGE swing at " + other.getName() + " and missed completely!")
+    return (getName() + " took a HUGE swing at " + other.getName() + " and missed completely!");
   }
 
   // eats a pie. gains 2-3 health/energy
@@ -76,13 +77,12 @@ public class SwordWarrior extends Adventurer{
     if (crit){
       other.applyHeal(2);
       other.restoreSpecial(2);
-      return (getName() + " threw " + other.getName() " a pie which gave them 2 health and energy!");
+      return (getName() + " threw " + other.getName() + " a pie which gave them 2 health and energy!");
     }
     else{
       other.applyDamage(-1);
-      return (getName() + " smacked " + other.getName() + " in the face with a pie, dealing 1 damage!")
+      return (getName() + " smacked " + other.getName() + " in the face with a pie, dealing 1 damage!");
     }
 
-
-
+  }
 }
