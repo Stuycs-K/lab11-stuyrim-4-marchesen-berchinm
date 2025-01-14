@@ -26,33 +26,24 @@ public class Game{
     /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
   }
 
-  /*Use this method to place text on the screen at a particular location.
-  *When the length of the text exceeds width, continue on the next line
-  *for up to height lines.
-  *All remaining locations in the text box should be written with spaces to
-  *clear previously written text.
-  *@param row the row to start the top left corner of the text box.
-  *@param col the column to start the top left corner of the text box.
-  *@param width the number of characters per row
-  *@param height the number of rows
-  */
-  public static void TextBox(int row, int col, int width, int height, String text){
+  public static void TextBox(int row, int col, int width, int height, String str){
     int charsPrinted = 0;
     int rowNum = 0;
-    for (int i = 0; i < width * height - text.length(); i++){
-      text += " ";
+    String text = str;
+    for (int i = 0; i < width * height - str.length(); i++){
+      text += " "; // make it a perfect rectangular string (spaces at end to replace)
     }
+    if (text.length() > width * height){text = text.substring(0, width * height);} // cut off if box is too small
     while (charsPrinted < text.length()){
-      Text.go(row+rowNum,col);
+      Text.go(row+rowNum,col); // keep going to next row after printing width chars
       if (charsPrinted + width < text.length()) {System.out.print(text.substring(charsPrinted,charsPrinted+width));}
-      else {System.out.print(text.substring(charsPrinted));}
-      charsPrinted += width;
+      else {System.out.print(text.substring(charsPrinted));} // watch for out-of-range error
+      charsPrinted += width; // increment
       rowNum++;
     }
     Text.go(29,1);
     return;
   }
-
 
 
 
@@ -166,9 +157,7 @@ public class Game{
       input = userInput(in);
 
       //example debug statment
-      String[] strings = new String[]{"abcdefg", "abcde", "abc"};
-      TextBox(2,2,75,10,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
-      TextBox(21,41,3,2,strings[(int)(3 * Math.random())]);
+      TextBox(1,1,80,2,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
 
       //display event based on last turn's input
       if(partyTurn){
