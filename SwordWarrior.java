@@ -58,23 +58,30 @@ public class SwordWarrior extends Adventurer{
     return (getName() + " took a HUGE swing at " + other.getName() + " and missed completely!")
   }
 
+  // eats a pie. gains 2-3 health/energy
   public String support(){
-
+    int heal = (int)(2 + 2 * Math.random());
+    int energy = (int)(2 + 2 * Math.random());
+    applyHeal(heal);
+    restoreSpecial(energy);
+    return (getName() + " ate a pie, gaining " + heal + " health and " + energy + " energy!");
   }
 
-  // throws a pie at another adventurer. either smacks them and deals 1 damage/energy or gives them 2-3 damage/energy with equal odds
+  // throws a pie at another adventurer. either smacks them and deals 1 damage or gives them 2 health/energy with equal odds
   public String support(Adventurer other){
     int rng = (int)(2 * Math.random());
     boolean crit = false;
     if (rng == 1) crit = true;
 
     if (crit){
-      int heal = (int)(2 + 2 * Math.random());
-      other.applyHeal(heal);
-      other.restoreSpecial(heal);
-      return (getName() + " threw " + other.getName() " a pie which gave them " + heal + " health and energy! ");
+      other.applyHeal(2);
+      other.restoreSpecial(2);
+      return (getName() + " threw " + other.getName() " a pie which gave them 2 health and energy!");
     }
-    else
+    else{
+      other.applyDamage(-1);
+      return (getName() + " smacked " + other.getName() + " in the face with a pie, dealing 1 damage!")
+    }
 
 
 
