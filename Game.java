@@ -37,9 +37,20 @@ public class Game{
   *@param height the number of rows
   */
   public static void TextBox(int row, int col, int width, int height, String text){
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    int charsPrinted = 0;
+    int rowNum = 0;
+    for (int i = 0; i < width * height - text.length(); i++){
+      text += " ";
+    }
+    while (charsPrinted < text.length()){
+      Text.go(row+rowNum,col);
+      if (charsPrinted + width < text.length()) {System.out.print(text.substring(charsPrinted,charsPrinted+width));}
+      else {System.out.print(text.substring(charsPrinted));}
+      charsPrinted += width;
+      rowNum++;
+    }
+    Text.go(29,1);
+    return;
   }
 
 
@@ -138,56 +149,41 @@ public class Game{
         //Adventurers you control:
         //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
-    for (int i = 0; i < 2; i++){
-      System.out.println("type class"); // I will change this
-      String c = userInput(in);
-      System.out.println("type name"); // I will change this
-      String n = userInput(in);
-      if (c.equals("s")){party.add(new SwordWarrior(n));}
-    }
-
-    System.out.println(party);
-
 
     //Draw the window border
 
     //You can add parameters to draw screen!
 
-    // drawScreen();//initial state.
+    drawScreen(); //initial state.
 
     //Main loop
 
     //display this prompt at the start of the game.
-    String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
+    // String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
 
     while(! (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
       //Read user input
       input = userInput(in);
 
       //example debug statment
-      TextBox(24,2,1,78,"input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent );
+      String[] strings = new String[]{"abcdefg", "abcde", "abc"};
+      TextBox(2,2,75,10,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
+      TextBox(21,41,3,2,strings[(int)(3 * Math.random())]);
 
       //display event based on last turn's input
       if(partyTurn){
 
-        Adventurer current = party.get(whichPlayer);
+        // Adventurer current = party.get(whichPlayer);
 
         //Process user input for the last Adventurer:
         if(input.equals("attack") || input.equals("a")){
-          current.attack(boss);
-          System.out.println(boss.getHP());
+
         }
         else if(input.equals("special") || input.equals("sp")){
-          /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-          //YOUR CODE HERE
-          /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+
         }
         else if(input.startsWith("su ") || input.startsWith("support ")){
-          //"support 0" or "su 0" or "su 2" etc.
-          //assume the value that follows su  is an integer.
-          /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-          //YOUR CODE HERE
-          /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+
         }
 
         //You should decide when you want to re-ask for user input
@@ -198,10 +194,10 @@ public class Game{
         if(whichPlayer < party.size()){
           //This is a player turn.
           //Decide where to draw the following prompt:
-          String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+          String prompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
+        }
 
-
-        }else{
+          else{
           //This is after the player's turn, and allows the user to see the enemy turn
           //Decide where to draw the following prompt:
           String prompt = "press enter to see monster's turn";
@@ -236,7 +232,7 @@ public class Game{
         turn++;
         partyTurn=true;
         //display this prompt before player's turn
-        String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+        // String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
       }
 
       //display the updated screen after input has been processed.
