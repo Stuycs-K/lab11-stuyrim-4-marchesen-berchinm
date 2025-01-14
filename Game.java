@@ -118,38 +118,47 @@ public class Game{
     Text.hideCursor();
     Text.clear();
 
-
-    //Things to attack:
-    //Make an ArrayList of Adventurers and add 1-3 enemies to it.
-    //If only 1 enemy is added it should be the boss class.
-    //start with 1 boss and modify the code to allow 2-3 adventurers later.
-    ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-
-    //Adventurers you control:
-    //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
-    ArrayList<Adventurer> party = new ArrayList<>();
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-
     boolean partyTurn = true;
     int whichPlayer = 0;
     int whichOpponent = 0;
     int turn = 0;
     String input = "";//blank to get into the main loop.
     Scanner in = new Scanner(System.in);
+
+
+        //Things to attack:
+        //Make an ArrayList of Adventurers and add 1-3 enemies to it.
+        //If only 1 enemy is added it should be the boss class.
+        //start with 1 boss and modify the code to allow 2-3 adventurers later.
+    ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
+
+    Adventurer boss = new SwordWarrior("boss");
+
+
+        //Adventurers you control:
+        //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
+    ArrayList<Adventurer> party = new ArrayList<Adventurer>();
+    for (int i = 0; i < 2; i++){
+      System.out.println("type class"); // I will change this
+      String c = userInput(in);
+      System.out.println("type name"); // I will change this
+      String n = userInput(in);
+      if (c.equals("s")){party.add(new SwordWarrior(n));}
+    }
+
+    System.out.println(party);
+
+
     //Draw the window border
 
     //You can add parameters to draw screen!
-    drawScreen();//initial state.
+
+    // drawScreen();//initial state.
 
     //Main loop
 
     //display this prompt at the start of the game.
-    String preprompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+    String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
 
     while(! (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
       //Read user input
@@ -161,11 +170,12 @@ public class Game{
       //display event based on last turn's input
       if(partyTurn){
 
+        Adventurer current = party.get(whichPlayer);
+
         //Process user input for the last Adventurer:
         if(input.equals("attack") || input.equals("a")){
-          /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-          //YOUR CODE HERE
-          /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+          current.attack(boss);
+          System.out.println(boss.getHP());
         }
         else if(input.equals("special") || input.equals("sp")){
           /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/

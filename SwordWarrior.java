@@ -31,10 +31,10 @@ public class SwordWarrior extends Adventurer{
   public String attack(Adventurer other){
     int rng = (int)(5 * Math.random());
     boolean crit = false;
-    if (rng == 4) crit = true;
+    if (rng == 4){crit = true;}
 
-    int damage = (int)(4 + Math.random());
-    if (crit = true){damage += 5;}
+    int damage = (int)(4 + 2 * Math.random());
+    if (crit){damage += 4;}
 
     other.applyDamage(damage);
 
