@@ -12,18 +12,32 @@ public class Game{
   //Display the borders of your screen that will not change.
   //Do not write over the blank areas where text will appear or parties will appear.
   public static void drawBackground(){
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    Text.go(1,1);
+    System.out.print("┏");
+    for (int i = 0; i < 78; i++){System.out.print("━");}
+    System.out.print("┓");
+    for (int i = 2; i <= 29; i++){
+      Text.go(i,1);
+      System.out.print("┃");
+      Text.go(i,80);
+      System.out.print("┃");
+    }
+    Text.go(30,1);
+    System.out.print("┗");
+    for (int i = 0; i < 78; i++){System.out.print("━");}
+    System.out.print("┛");
+    Text.go(29,2);
+    return;
   }
 
   //Display a line of text starting at
   //(columns and rows start at 1 (not zero) in the terminal)
   //use this method in your other text drawing methods to make things simpler.
   public static void drawText(String s,int startRow, int startCol){
-    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-    //YOUR CODE HERE
-    /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    Text.go(startRow, startCol);
+    System.out.print(s)
+    Text.go(29,2);
+    return;
   }
 
   public static void TextBox(int row, int col, int width, int height, String str){
@@ -41,7 +55,7 @@ public class Game{
       charsPrinted += width; // increment
       rowNum++;
     }
-    Text.go(29,1);
+    Text.go(29,2);
     return;
   }
 
@@ -157,12 +171,10 @@ public class Game{
       input = userInput(in);
 
       //example debug statment
-      TextBox(1,1,80,2,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
+      TextBox(3,3,75,2,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
 
       //display event based on last turn's input
       if(partyTurn){
-
-        // Adventurer current = party.get(whichPlayer);
 
         //Process user input for the last Adventurer:
         if(input.equals("attack") || input.equals("a")){
