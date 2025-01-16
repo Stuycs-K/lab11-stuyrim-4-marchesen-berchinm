@@ -226,7 +226,7 @@ public class Game{
         turn++;
         partyTurn=true;
         //display this prompt before player's turn
-        // String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+        String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
       }
 
       //display the updated screen after input has been processed.

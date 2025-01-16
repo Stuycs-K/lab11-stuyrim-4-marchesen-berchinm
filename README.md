@@ -29,14 +29,20 @@ Make a clear list of features that work/don't work
 ### Crossbow Warrior
 
 **Attack**: Bowshot - deals 0 damage (10% chance) or 4-7 damage (90% chance)
-s
+
 **Special**: Focus
 
-**SpecialAttack**: Headshot - 0 damage (15% chance) or 12-18 damage (85% chance)
+**SpecialAttack**: Headshot - 0 damage (15% chance) or 12-18 damage (85% chance) (5 focus)
 
-**Support**: Eat a carrot
+**Initial Special**: 2
 
-**Support Other**: Give a carrot to someone else
+**Max Special**: 8
+
+**Support**: Eat a carrot - heals 1-3 HP
+
+**Support Other**: Give a carrot to someone else - heals 1-2 HP
+
+**Max HP**: 20
 
 --
 
@@ -50,6 +56,12 @@ s
 
 **Special Attack**: Monster Slice - deals 0-1 or 20-21 damage (50% crit rate) (5 energy)
 
+**Initial Special**: 3
+
+**Max Special**: 7
+
 **Support**: Eat Pie - gains 2-3 health, 2-3 energy
 
 **Support Other**: Throw Pie - gives -1 or 2-3 health, -1 or 2-3 energy (77% crit rate)
+
+**Max HP**: 30
