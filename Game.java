@@ -1,4 +1,5 @@
 import java.util.*;
+
 public class Game{
   private static final int WIDTH = 80;
   private static final int HEIGHT = 30;
@@ -35,6 +36,7 @@ public class Game{
     for (int i = 0; i < 78; i++){System.out.print("─");}
     System.out.print("╯");
     Text.go(29,2);
+    System.out.print("> ");
     return;
   }
 
@@ -44,7 +46,7 @@ public class Game{
   public static void drawText(String s,int startRow, int startCol){
     Text.go(startRow, startCol);
     System.out.print(s);
-    Text.go(29,2);
+    Text.go(29,4);
     return;
   }
 
@@ -63,7 +65,7 @@ public class Game{
       charsPrinted += width; // increment
       rowNum++;
     }
-    Text.go(29,2);
+    Text.go(29,4);
     return;
   }
 
@@ -91,7 +93,6 @@ public class Game{
     }
   }
 
-
   //Use this to create a colorized number string based on the % compared to the max value.
   public static String colorByPercent(int hp, int maxHP){
     String output = String.format("%2s", hp+"")+"/"+String.format("%2s", maxHP+"");
@@ -102,32 +103,21 @@ public class Game{
     return output;
   }
 
-
-
-
-
   //Display the party and enemies
   //Do not write over the blank areas where text will appear.
   //Place the cursor at the place where the user will by typing their input at the end of this method.
-  public static void drawScreen(){
-
+  public static void drawScreen(ArrayList<Adventurer> party, ArrayList<Adventurer> enemies){
     drawBackground();
-
-    // draw party
-
-    //draw enemy party
-
+    drawParty(party, 3);
+    drawParty(enemies, 22);
+    return;
   }
 
   public static String userInput(Scanner in){
-      //Move cursor to prompt location
-
-      //show cursor
-
+      Text.go(29,4);
+      Text.showCursor();
       String input = in.nextLine();
-
-      //clear the text that was written
-
+      TextBox(29,2,78,1,"");
       return input;
   }
 
@@ -149,6 +139,13 @@ public class Game{
     String input = "";//blank to get into the main loop.
     Scanner in = new Scanner(System.in);
 
+        //Adventurers you control:
+        //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
+    ArrayList<Adventurer> party = new ArrayList<Adventurer>();
+    party.add(new SwordWarrior("Nick"));
+    party.add(new CodeWarrior("Rick"));
+    party.add(new SwordWarrior("Mick"));
+    party.add(new CodeWarrior("Wick", 27));
 
         //Things to attack:
         //Make an ArrayList of Adventurers and add 1-3 enemies to it.
@@ -159,38 +156,23 @@ public class Game{
     enemies.add(new CodeWarrior("Mack", 41));
     enemies.add(new SwordWarrior("Zack"));
 
-        //Adventurers you control:
-        //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
-    ArrayList<Adventurer> party = new ArrayList<Adventurer>();
-    party.add(new SwordWarrior("Nick"));
-    party.add(new CodeWarrior("Rick"));
-    party.add(new SwordWarrior("Mick"));
-    party.add(new CodeWarrior("Wick", 27));
-
-
-    //Draw the window border
-
-    //You can add parameters to draw screen!
-
-    drawScreen(); //initial state.
-    drawParty(party, 3);
-    drawParty(enemies, 22);
+    drawScreen(party, enemies); //initial state.
 
     //Main loop
-
     //display this prompt at the start of the game.
-    // String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
+    String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
+    TextBox(27,2,78,1,preprompt);
 
-    while(! (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
+    while(!(input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
+
+      //debug statment
+      TextBox(26,2,78,1,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
+
       //Read user input
       input = userInput(in);
 
-      //example debug statment
-      TextBox(26,2,75,2,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
-
       //display event based on last turn's input
       if(partyTurn){
-
         //Process user input for the last Adventurer:
         if(input.equals("attack") || input.equals("a")){
 
@@ -206,13 +188,11 @@ public class Game{
         //If no errors:
         whichPlayer++;
 
-
         if(whichPlayer < party.size()){
           //This is a player turn.
           //Decide where to draw the following prompt:
           String prompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
         }
-
           else{
           //This is after the player's turn, and allows the user to see the enemy turn
           //Decide where to draw the following prompt:
@@ -222,9 +202,9 @@ public class Game{
           whichOpponent = 0;
         }
         //done with one party member
-      }else{
+      }
+      else{
         //not the party turn!
-
 
         //enemy attacks a randomly chosen person with a randomly chosen attack.z`
         //Enemy action choices go here!
@@ -232,12 +212,10 @@ public class Game{
         //YOUR CODE HERE
         /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
-
         //Decide where to draw the following prompt:
         String prompt = "press enter to see next turn";
 
         whichOpponent++;
-
       }//end of one enemy.
 
       //modify this if statement.
@@ -252,13 +230,11 @@ public class Game{
       }
 
       //display the updated screen after input has been processed.
-      drawScreen();
-
-
+      drawScreen(party, enemies);
     }//end of main game loop
-
 
     //After quit reset things:
     quit();
   }
+
 }
