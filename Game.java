@@ -13,19 +13,27 @@ public class Game{
   //Do not write over the blank areas where text will appear or parties will appear.
   public static void drawBackground(){
     Text.go(1,1);
-    System.out.print("┏");
-    for (int i = 0; i < 78; i++){System.out.print("━");}
-    System.out.print("┓");
+    System.out.print("╭");
+    for (int i = 2; i <= 79; i++){System.out.print("─");}
+    System.out.print("╮");
     for (int i = 2; i <= 29; i++){
-      Text.go(i,1);
-      System.out.print("┃");
-      Text.go(i,80);
-      System.out.print("┃");
+      if (i == 6 || i == 20 || i == 25){ // horizontals
+        Text.go(i,1);
+        System.out.print("├");
+        for (int j = 2; j <= 79; j++){System.out.print("─");}
+        System.out.print("┤");
+      }
+      else{
+        Text.go(i,1);
+        System.out.print("│");
+        Text.go(i,80);
+        System.out.print("│");
+      }
     }
     Text.go(30,1);
-    System.out.print("┗");
-    for (int i = 0; i < 78; i++){System.out.print("━");}
-    System.out.print("┛");
+    System.out.print("╰");
+    for (int i = 0; i < 78; i++){System.out.print("─");}
+    System.out.print("╯");
     Text.go(29,2);
     return;
   }
@@ -35,7 +43,7 @@ public class Game{
   //use this method in your other text drawing methods to make things simpler.
   public static void drawText(String s,int startRow, int startCol){
     Text.go(startRow, startCol);
-    System.out.print(s)
+    System.out.print(s);
     Text.go(29,2);
     return;
   }
@@ -59,13 +67,11 @@ public class Game{
     return;
   }
 
-
-
     //return a random adventurer (choose between all available subclasses)
     //feel free to overload this method to allow specific names/stats.
-    public static Adventurer createRandomAdventurer(){
-      return new CodeWarrior("Bob"+(int)(Math.random()*100));
-    }
+  public static Adventurer createRandomAdventurer(){
+    return new CodeWarrior("Bob"+(int)(Math.random()*100));
+  }
 
     /*Display a List of 2-4 adventurers on the rows row through row+3 (4 rows max)
     *Should include Name HP and Special on 3 separate lines.
@@ -76,17 +82,14 @@ public class Game{
     *Caffeine: 20 Mana: 10   Snark: 1
     * ***THIS ROW INTENTIONALLY LEFT BLANK***
     */
-    public static void drawParty(ArrayList<Adventurer> party,int startRow){
-      String names = "", HPs = "", specials = "";
-      for (int i = 0; i < party.size(); i++){
-        names += party.get(i) + "\t";
-        HPs += "HP: " + party.get(i).getHP() + "\t";
-        specials += party.get(i).getSpecialName() + ": " + party.get(i).getSpecial();
-      }
-      TextBox(startRow, 3, 30, 1, names);
-      TextBox(startRow+1, 3, 30, 1, HPs);
-      TextBox(startRow+2, 3, 30, 1, specials);
+  public static void drawParty(ArrayList<Adventurer> party,int startRow){
+    String names = "", HPs = "", specials = "";
+    for (int i = 0; i < party.size(); i++){
+      TextBox(startRow, 3+21*i, 12, 1, party.get(i).getName());
+      TextBox(startRow+1, 3+21*i, 12, 1, "HP: " + party.get(i).getHP());
+      TextBox(startRow+2, 3+21*i, 12, 1, party.get(i).getSpecialName() + ": " + party.get(i).getSpecial());
     }
+  }
 
 
   //Use this to create a colorized number string based on the % compared to the max value.
@@ -152,15 +155,17 @@ public class Game{
         //If only 1 enemy is added it should be the boss class.
         //start with 1 boss and modify the code to allow 2-3 adventurers later.
     ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
-
-    Adventurer boss = new SwordWarrior("boss");
-
+    enemies.add(new SwordWarrior("Jack")); // will update all this
+    enemies.add(new CodeWarrior("Mack", 41));
+    enemies.add(new SwordWarrior("Zack"));
 
         //Adventurers you control:
         //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
     party.add(new SwordWarrior("Nick"));
     party.add(new CodeWarrior("Rick"));
+    party.add(new SwordWarrior("Mick"));
+    party.add(new CodeWarrior("Wick", 27));
 
 
     //Draw the window border
@@ -168,7 +173,8 @@ public class Game{
     //You can add parameters to draw screen!
 
     drawScreen(); //initial state.
-    drawParty(party, 5);
+    drawParty(party, 3);
+    drawParty(enemies, 22);
 
     //Main loop
 
@@ -180,7 +186,7 @@ public class Game{
       input = userInput(in);
 
       //example debug statment
-      TextBox(3,3,75,2,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
+      TextBox(26,2,75,2,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
 
       //display event based on last turn's input
       if(partyTurn){
