@@ -22,14 +22,13 @@ Make a clear list of features that work/don't work
 * The program ends when the user chose to quit, or all enemies is defeated, or the entire party is defeated :x:
 * Can display the results of the attack/special/support inside your border :x:
 
-
-
 ## Adventurer Subclasses
 
+--
 
 ### Crossbow Warrior
 
-**Attack**: Bowshot - 0 damage (10% chance) or 4-7 damage (90% chance)
+**Attack**: Bowshot - deals 0 damage (10% chance) or 4-7 damage (90% chance)
 s
 **Special**: Focus
 
@@ -39,15 +38,13 @@ s
 
 **Support Other**: Give a carrot to someone else
 
-
-
-
+--
 
 ### Sword Warrior
 
 *Trips on a rock fairly often; not the most trained of fighters*
 
-**Attack**: Slice - deals 4-5 or 8-9 damage (20% crit rate)
+**Attack**: Slice - deals 4-5 or 8-9 damage (20% critical hit rate)
 
 **Special Resource**: Energy
 
@@ -56,4 +53,3 @@ s
 **Support**: Eat Pie - gains 2-3 health, 2-3 energy
 
 **Support Other**: Throw Pie - gives -1 or 2-3 health, -1 or 2-3 energy (77% crit rate)
-

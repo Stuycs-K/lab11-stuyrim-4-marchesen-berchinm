@@ -77,10 +77,15 @@ public class Game{
     * ***THIS ROW INTENTIONALLY LEFT BLANK***
     */
     public static void drawParty(ArrayList<Adventurer> party,int startRow){
-
-      /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-      //YOUR CODE HERE
-      /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+      String names = "", HPs = "", specials = "";
+      for (int i = 0; i < party.size(); i++){
+        names += party.get(i) + "\t";
+        HPs += "HP: " + party.get(i).getHP() + "\t";
+        specials += party.get(i).getSpecialName() + ": " + party.get(i).getSpecial();
+      }
+      TextBox(startRow, 3, 30, 1, names);
+      TextBox(startRow+1, 3, 30, 1, HPs);
+      TextBox(startRow+2, 3, 30, 1, specials);
     }
 
 
@@ -105,7 +110,7 @@ public class Game{
 
     drawBackground();
 
-    //draw player party
+    // draw party
 
     //draw enemy party
 
@@ -154,12 +159,16 @@ public class Game{
         //Adventurers you control:
         //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
+    party.add(new SwordWarrior("Nick"));
+    party.add(new CodeWarrior("Rick"));
+
 
     //Draw the window border
 
     //You can add parameters to draw screen!
 
     drawScreen(); //initial state.
+    drawParty(party, 5);
 
     //Main loop
 
