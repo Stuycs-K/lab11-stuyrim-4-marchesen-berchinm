@@ -41,7 +41,9 @@ public class CrossbowWarrior extends Adventurer{
     return event + "missed completely, dealing 0 damage!";
   }
 
-  public String specialAttack(Adventurer other) {}
+  public String specialAttack(Adventurer other) {
+    if (getSpecial() < 5) return "Not enough focus!"
+  }
 
   public String support() {}
 
