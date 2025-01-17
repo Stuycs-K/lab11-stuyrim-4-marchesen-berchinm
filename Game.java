@@ -87,9 +87,10 @@ public class Game{
   public static void drawParty(ArrayList<Adventurer> party,int startRow){
     String names = "", HPs = "", specials = "";
     for (int i = 0; i < party.size(); i++){
-      TextBox(startRow, 3+21*i, 12, 1, party.get(i).getName());
-      TextBox(startRow+1, 3+21*i, 12, 1, "HP: " + party.get(i).getHP());
-      TextBox(startRow+2, 3+21*i, 12, 1, party.get(i).getSpecialName() + ": " + party.get(i).getSpecial());
+      Adventurer p = party.get(i);
+      TextBox(startRow, 3+20*i, 15, 1, p.getName());
+      TextBox(startRow+1, 3+20*i, 15, 1, "HP: " + p.getHP() + "/" + p.getmaxHP());
+      TextBox(startRow+2, 3+20*i, 15, 1, p.getSpecialName() + ": " + p.getSpecial() + "/" + p.getSpecialMax());
     }
   }
 
@@ -108,8 +109,8 @@ public class Game{
   //Place the cursor at the place where the user will by typing their input at the end of this method.
   public static void drawScreen(ArrayList<Adventurer> party, ArrayList<Adventurer> enemies){
     drawBackground();
-    drawParty(party, 3);
-    drawParty(enemies, 22);
+    drawParty(party, 22);
+    drawParty(enemies, 3);
     return;
   }
 
@@ -152,9 +153,7 @@ public class Game{
         //If only 1 enemy is added it should be the boss class.
         //start with 1 boss and modify the code to allow 2-3 adventurers later.
     ArrayList<Adventurer>enemies = new ArrayList<Adventurer>();
-    enemies.add(new SwordWarrior("Jack")); // will update all this
-    enemies.add(new CodeWarrior("Mack", 41));
-    enemies.add(new SwordWarrior("Zack"));
+    enemies.add(new Boss());
 
     drawScreen(party, enemies); //initial state.
 
@@ -174,14 +173,24 @@ public class Game{
       //display event based on last turn's input
       if(partyTurn){
         //Process user input for the last Adventurer:
+        String s = null;
+        Adventurer p = party.get(whichPlayer);
         if(input.equals("attack") || input.equals("a")){
-
+          s = p.attack(enemies.get(0));
+          TextBox(16,20,40,3,s);
         }
         else if(input.equals("special") || input.equals("sp")){
-
+          s = p.specialAttack(enemies.get(0));
+          TextBox(16,20,40,3,s);
         }
-        else if(input.startsWith("su ") || input.startsWith("support ")){
-
+        else if(input.startsWith("su") || input.startsWith("support")){
+          int player = Integer.parseInt(input); // fix
+          if (player == 0){s = p.support(party.get(0));}
+          if (player == 1){s = p.support(party.get(1));}
+          if (player == 2){s = p.support(party.get(2));}
+          if (player == 3){s = p.support(party.get(3));}
+          else {s = p.support();}
+          TextBox(16,20,40,3,s);
         }
 
         //You should decide when you want to re-ask for user input
@@ -192,11 +201,13 @@ public class Game{
           //This is a player turn.
           //Decide where to draw the following prompt:
           String prompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
+          TextBox(27,2,78,1,prompt);
         }
-          else{
+        else{
           //This is after the player's turn, and allows the user to see the enemy turn
           //Decide where to draw the following prompt:
           String prompt = "press enter to see monster's turn";
+          TextBox(27,2,78,1,prompt);
 
           partyTurn = false;
           whichOpponent = 0;
@@ -206,14 +217,23 @@ public class Game{
       else{
         //not the party turn!
 
-        //enemy attacks a randomly chosen person with a randomly chosen attack.z`
-        //Enemy action choices go here!
-        /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-        //YOUR CODE HERE
-        /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+        //enemy attacks a randomly chosen person with a randomly chosen attack.
+
+        if (enemies.size() == 1){ // what a single boss would do
+          Adventurer enemy = enemies.get(whichOpponent);
+          Adventurer randHero = party.get((int)(4 * Math.random()));
+          int randAttack = (int)(3 * Math.random());
+          String enemyS;
+          if (randAttack == 0){enemyS = enemy.attack(randHero);}
+          else if (randAttack == 1){enemyS = enemy.support();}
+          else{enemyS = enemy.specialAttack(randHero);}
+          TextBox(16,20,40,3,enemyS);
+        }
+
 
         //Decide where to draw the following prompt:
         String prompt = "press enter to see next turn";
+        TextBox(27,2,78,1,prompt);
 
         whichOpponent++;
       }//end of one enemy.
@@ -226,7 +246,8 @@ public class Game{
         turn++;
         partyTurn=true;
         //display this prompt before player's turn
-        String prompt = "Enter command for "+party.get(whichPlayer)+": attack/special/quit";
+        String prompt = "Enter command for " + party.get(whichPlayer)+": attack/special/quit";
+        TextBox(27,2,78,1,prompt);
       }
 
       //display the updated screen after input has been processed.
