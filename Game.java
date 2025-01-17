@@ -115,11 +115,11 @@ public class Game{
   }
 
   public static String userInput(Scanner in){
-      Text.go(29,4);
-      Text.showCursor();
-      String input = in.nextLine();
-      TextBox(29,2,78,1,"");
-      return input;
+    Text.go(29,4);
+    Text.showCursor();
+    String input = in.nextLine();
+    TextBox(29,2,78,1,"");
+    return input;
   }
 
   public static void quit(){
@@ -184,11 +184,15 @@ public class Game{
           TextBox(16,20,40,3,s);
         }
         else if(input.startsWith("su") || input.startsWith("support")){
-          int player = Integer.parseInt(input); // fix
-          if (player == 0){s = p.support(party.get(0));}
-          if (player == 1){s = p.support(party.get(1));}
-          if (player == 2){s = p.support(party.get(2));}
-          if (player == 3){s = p.support(party.get(3));}
+          String num = input.replaceAll("[^1-9]","");
+          int player;
+          if (num.length() != 0){player = Integer.parseInt(input);}
+          else{player = whichPlayer;}
+          if (player == whichPlayer){s = p.support();}
+          else if (player == 0){s = p.support(party.get(0));}
+          else if (player == 1){s = p.support(party.get(1));}
+          else if (player == 2){s = p.support(party.get(2));}
+          else if (player == 3){s = p.support(party.get(3));}
           else {s = p.support();}
           TextBox(16,20,40,3,s);
         }

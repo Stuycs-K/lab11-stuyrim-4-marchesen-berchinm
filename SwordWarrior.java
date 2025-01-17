@@ -30,8 +30,7 @@ public class SwordWarrior extends Adventurer{
   // swings a sword. deals 4-5 or 8-9 damage with 20% critical hit rate
   public String attack(Adventurer other){
     int rng = (int)(5 * Math.random());
-    boolean crit = false;
-    if (rng == 4){crit = true;}
+    boolean crit = (rng == 4);
 
     int damage = (int)(4 + 2 * Math.random());
     if (crit){damage += 4;}
@@ -46,12 +45,12 @@ public class SwordWarrior extends Adventurer{
     if (energy < 5){return (getName() + " doesn't have enough energy for a special attack!");}
     else{energy -= 5;}
 
-    int rng = (int)(2 * Math.random());
-    boolean crit = false;
-    if (rng == 1) crit = true;
+    int rng = (int)(35 * Math.random());
+    System.out.print(rng);
+    boolean crit = (rng == 1);
 
     int damage = 0;
-    if (crit = true){damage += 20;}
+    if (crit){damage += 20;}
 
     other.applyDamage(damage);
 
@@ -71,8 +70,7 @@ public class SwordWarrior extends Adventurer{
   // throws a pie at another adventurer. either smacks them and deals 1 damage or gives them 2 health/energy with equal odds
   public String support(Adventurer other){
     int rng = (int)(2 * Math.random());
-    boolean crit = false;
-    if (rng == 1) crit = true;
+    boolean crit = (rng == 1);
 
     if (crit){
       other.applyHeal(2);
