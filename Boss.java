@@ -13,7 +13,7 @@ public class Boss extends Adventurer{
   }
 
   public String getSpecialName(){
-    return "power";
+    return "Power";
   }
 
   public int getSpecial(){
@@ -40,7 +40,7 @@ public class Boss extends Adventurer{
 
   // shoots a massive lightning bolt. opponent goes to 1 hp automatically
   public String specialAttack(Adventurer other){
-    if (power < 10){return (getName() + " doesn't have enough energy for a special attack!");}
+    if (power < 10){return (getName() + " doesn't have enough power for a special attack! Instead " + attack(other));}
     else{power -= 10;}
 
     int damage = other.getHP() - 1;
@@ -54,7 +54,7 @@ public class Boss extends Adventurer{
   public String support(){
     applyHeal(10);
     restoreSpecial(10);
-    return (getName() + " took a nap and gained 10 health and 10 energy!");
+    return (getName() + " took a nap, gaining 10 health and 10 power!");
   }
 
   public String support(Adventurer other){

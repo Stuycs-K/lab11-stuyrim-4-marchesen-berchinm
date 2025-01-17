@@ -12,7 +12,7 @@ public class SwordWarrior extends Adventurer{
   }
 
   public String getSpecialName(){
-    return "energy";
+    return "Energy";
   }
 
   public int getSpecial(){
@@ -42,7 +42,7 @@ public class SwordWarrior extends Adventurer{
 
   // takes a HUGE swing. deals 0 or 20 damage with equal odds
   public String specialAttack(Adventurer other){
-    if (energy < 5){return (getName() + " doesn't have enough energy for a special attack!");}
+    if (energy < 5){return (getName() + " doesn't have enough energy for a special attack! Instead " + attack(other));}
     else{energy -= 5;}
 
     int rng = (int)(35 * Math.random());
