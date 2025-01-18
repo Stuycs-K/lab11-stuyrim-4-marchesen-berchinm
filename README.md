@@ -32,7 +32,7 @@ Make a clear list of features that work/don't work
 
 **Special**: Focus
 
-**SpecialAttack**: Headshot - 0 damage (15% chance) or 12-18 damage (85% chance) (5 focus)
+**SpecialAttack**: Headshot - 0 damage (20% chance) or 12-18 damage (80% chance) (5 focus)
 
 **Initial Special**: 2
 

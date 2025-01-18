@@ -34,25 +34,34 @@ public class CrossbowWarrior extends Adventurer{
     String event = getName() + " shot at " + other.getName() + " and ";
     boolean hitTarget = yesNo(10);
     if (hitTarget) {
-      int damage = (int) Math.random() * 3 + 4;
+      int damage = (int) (Math.random() * 4 + 4);
       return event + "dealt " + damage + " damage!";
     }
     //else
     return event + "missed completely, dealing 0 damage!";
   }
+  
+  
 
   public String specialAttack(Adventurer other) {
-    if (getSpecial() < 5) return "Not enough focus!"
+    if (getSpecial() < 5) return "Not enough focus!";
+	return "";
   }
 
-  public String support() {}
+  public String support() {
+	return "";
+  }
 
-  public String support(Adventurer other) {}
+  public String support(Adventurer other) {
+	return "";
+  }
+  
+  
 
   //Helper function
-  private boolean yesNo(int chance) {
-    int binBool = (int) Math.random() * chance;
-    return binBool == 0;
+  private static boolean yesNo(int chance) {
+    int binBool = (int) (Math.random() * chance);
+    return binBool != 0;
   }
 
 }
