@@ -28,7 +28,7 @@ Make a clear list of features that work/don't work
 
 ### Crossbow Warrior
 
-**Attack**: Bowshot - deals 0 damage (10% chance) or 4-7 damage (90% chance)
+**Attack**: Bowshot - deals 0 damage (10% chance) or 4-7 damage (90% chance). Also restores 2 special to self.
 
 **Special**: Focus
 
@@ -38,9 +38,9 @@ Make a clear list of features that work/don't work
 
 **Max Special**: 8
 
-**Support**: Eat a carrot - heals 1-3 HP
+**Support**: Eat a carrot - heals 1-3 HP and 3-4 special
 
-**Support Other**: Give a carrot to someone else - heals 1-2 HP
+**Support Other**: Give a carrot to someone else - heals 1-2 HP and 3-4 special
 
 **Max HP**: 20
 
