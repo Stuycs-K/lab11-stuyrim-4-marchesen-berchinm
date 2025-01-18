@@ -7,6 +7,8 @@ public class CrossbowWarrior extends Adventurer{
 
   public CrossbowWarrior(String name) {
     super(name);
+	focus = 2;
+	maxFocus = 8;
   }
 
   public String getSpecialName(){
@@ -18,11 +20,14 @@ public class CrossbowWarrior extends Adventurer{
   }
 
   public void setSpecial(int n){
+	if (n > getSpecialMax()) {
+	  n = getSpecialMax();
+	}
     if (n >= 0) {
       focus = n;
     }
     else {
-      focus = maxFocus / 2;
+      focus = getSpecialMax() / 2;
     }
   }
 
@@ -35,6 +40,7 @@ public class CrossbowWarrior extends Adventurer{
     boolean hitTarget = yesNo(10);
     if (hitTarget) {
       int damage = (int) (Math.random() * 4 + 4);
+	  other.applyDamage(damage);
       return event + "dealt " + damage + " damage!";
     }
     //else
@@ -45,7 +51,18 @@ public class CrossbowWarrior extends Adventurer{
 
   public String specialAttack(Adventurer other) {
     if (getSpecial() < 5) return "Not enough focus!";
-	return "";
+	
+	setSpecial(getSpecial() - 5);
+	String event = getName() + " focused, shot at " + other.getName() + "'s head, and ";
+	boolean hitTarget = yesNo(5);
+	
+	if (hitTarget) {
+	  int damage = (int) (Math.random() * 7 + 12);
+	  other.applyDamage(damage);
+	  return event + "dealt " + damage + " damage!";
+	}
+	//else
+	return event + "missed completely, dealing 0 damage!";
   }
 
   public String support() {
@@ -58,7 +75,8 @@ public class CrossbowWarrior extends Adventurer{
   
   
 
-  //Helper function
+  //Helper functions
+  
   private static boolean yesNo(int chance) {
     int binBool = (int) (Math.random() * chance);
     return binBool != 0;
