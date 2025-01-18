@@ -70,7 +70,7 @@ public class CrossbowWarrior extends Adventurer{
 
   public String support() {
 	if (getHP() == getmaxHP() && getSpecial() == getSpecialMax()) {
-      return getName() + " tried to support themself, but they were already at full health and " + getSpecialName() + "!";
+      return getName() + " ate a carrot, but they were already at full health and " + getSpecialName() + "!";
     }
 	
 	int addHP = chooseNum(3, 1);
@@ -79,12 +79,23 @@ public class CrossbowWarrior extends Adventurer{
 	
 	restoreSpecial(chooseNum(2, 3));
 	
-    return getName() + " healed themself and/or restored some " + getSpecialName() 
-		+ "! They are now at " + getHP() + "/" + getmaxHP() + " health and " + getSpecial() + "/" + getSpecialMax() + " " + getSpecialName() + "!";
+    return getName() + " ate a carrot! They are now at " +
+		getHP() + "/" + getmaxHP() + " health and " + getSpecial() + "/" + getSpecialMax() + " " + getSpecialName() + "!";
   }
 
   public String support(Adventurer other) {
-	return "";
+	if (other.getHP() == other.getmaxHP() && other.getSpecial() == other.getSpecialMax()) {
+      return getName() + " gave a carrot to " + other.getName() + ", but they were already at full health and " + other.getSpecialName() + "!";
+    }
+	
+	int addHP = chooseNum(2, 1);
+	if (addHP + other.getHP() > other.getmaxHP()) addHP = other.getmaxHP() - other.getHP(); 
+    other.setHP(other.getHP() + addHP);
+	
+	other.restoreSpecial(chooseNum(2, 3));
+	
+    return getName() + " gave a carrot to " + other.getName() + "! " + 
+		other.getName() + " is now at " + other.getHP() + "/" + other.getmaxHP() + " health and " + other.getSpecial() + "/" + other.getSpecialMax() + " " + other.getSpecialName() + "!";
   }
   
   
