@@ -75,7 +75,7 @@ public class CrossbowWarrior extends Adventurer{
 	
 	int addHP = chooseNum(3, 1);
 	if (addHP + getHP() > getmaxHP()) addHP = getmaxHP() - getHP(); 
-    setHP(getHP() + addHP);
+    applyHeal(addHP);
 	
 	restoreSpecial(chooseNum(2, 3));
 	
@@ -90,7 +90,7 @@ public class CrossbowWarrior extends Adventurer{
 	
 	int addHP = chooseNum(2, 1);
 	if (addHP + other.getHP() > other.getmaxHP()) addHP = other.getmaxHP() - other.getHP(); 
-    other.setHP(other.getHP() + addHP);
+    other.applyHeal(addHP);
 	
 	other.restoreSpecial(chooseNum(2, 3));
 	
