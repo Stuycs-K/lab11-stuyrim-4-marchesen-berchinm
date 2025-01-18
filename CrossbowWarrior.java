@@ -39,12 +39,15 @@ public class CrossbowWarrior extends Adventurer{
     String event = getName() + " shot at " + other.getName() + " and ";
     boolean hitTarget = yesNo(10);
     if (hitTarget) {
-      int damage = (int) (Math.random() * 4 + 4);
+      int damage = chooseNum(4, 4);
 	  other.applyDamage(damage);
-      return event + "dealt " + damage + " damage!";
+      event += "dealt " + damage + " damage!";
     }
-    //else
-    return event + "missed completely, dealing 0 damage!";
+    else {
+      event += "missed completely, dealing 0 damage!";
+	}
+	restoreSpecial(2);
+	return event + " They then nibbled on a baby carrot.";
   }
   
   
@@ -57,7 +60,7 @@ public class CrossbowWarrior extends Adventurer{
 	boolean hitTarget = yesNo(5);
 	
 	if (hitTarget) {
-	  int damage = (int) (Math.random() * 7 + 12);
+	  int damage = chooseNum(7, 12);
 	  other.applyDamage(damage);
 	  return event + "dealt " + damage + " damage!";
 	}
@@ -66,7 +69,18 @@ public class CrossbowWarrior extends Adventurer{
   }
 
   public String support() {
-	return "";
+	if (getHP() == getmaxHP() && getSpecial() == getSpecialMax()) {
+      return getName() + " tried to support themself, but they were already at full health and " + getSpecialName() + "!";
+    }
+	
+	int addHP = chooseNum(3, 1);
+	if (addHP + getHP() > getmaxHP()) addHP = getmaxHP() - getHP(); 
+    setHP(getHP() + addHP);
+	
+	restoreSpecial(chooseNum(2, 3));
+	
+    return getName() + " healed themself and/or restored some " + getSpecialName() 
+		+ "! They are now at " + getHP() + "/" + getmaxHP() + " health and " + getSpecial() + "/" + getSpecialMax() + " " + getSpecialName() + "!";
   }
 
   public String support(Adventurer other) {
@@ -77,8 +91,12 @@ public class CrossbowWarrior extends Adventurer{
 
   //Helper functions
   
+  private static int chooseNum(int range, int min) {
+	return (int) (Math.random() * range + min);
+  }
+  
   private static boolean yesNo(int chance) {
-    int binBool = (int) (Math.random() * chance);
+    int binBool = chooseNum(chance, 0);
     return binBool != 0;
   }
 
