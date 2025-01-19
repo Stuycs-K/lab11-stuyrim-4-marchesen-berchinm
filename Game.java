@@ -129,6 +129,7 @@ public class Game{
     Text.reset();
     Text.showCursor();
     Text.go(32,1);
+	System.exit(0);
   }
 
   public static void run(){
@@ -137,21 +138,21 @@ public class Game{
     Text.clear();
 
     boolean partyTurn = true;
-    int whichPlayer = 0;
-    int whichOpponent = 0;
+    int whichPlayer = 0; //player from party whose turn it is
+    int whichOpponent = 0; //opponent whose turn it is
     int turn = 0;
     String input = "";//blank to get into the main loop.
     Scanner in = new Scanner(System.in);
 
-        //Adventurers you control:
-        //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
+    //Adventurers you control:
+    //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
     party.add(new SwordWarrior("Nick"));
     party.add(new CrossbowWarrior("Rick"));
     party.add(new SwordWarrior("Mick"));
     party.add(new CodeWarrior("Wick", 27));
 
-        //Things to attack:
+     //Things to attack:
         //Make an ArrayList of Adventurers and add 1-3 enemies to it.
         //If only 1 enemy is added it should be the boss class.
         //start with 1 boss and modify the code to allow 2-3 adventurers later.
@@ -162,7 +163,7 @@ public class Game{
 
     //Main loop
     //display this prompt at the start of the game.
-    String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/support/support(other)/quit";
+    String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/support/support other)/quit";
     TextBox(27,2,78,1,preprompt);
 
     while(!(input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
@@ -175,30 +176,38 @@ public class Game{
 
       //display event based on last turn's input
       if(partyTurn){
+		  
         //Process user input for the last Adventurer:
-        String s = null;
-        Adventurer p = party.get(whichPlayer);
-        if(input.equals("attack") || input.equals("a")){
+        String s = null; //the event of this turn, which will be defined and printed later
+        Adventurer p = party.get(whichPlayer); //whose turn it is
+		
+		//QUIT
+		if (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit")) quit();
+		
+		//ATTACK
+        else if (input.equals("attack") || input.equals("a")){
           s = p.attack(enemies.get(0));
-          TextBox(16,20,40,3,s);
         }
-        else if(input.equals("special") || input.equals("sp")){
+		
+		//SPECIAL ATTACK
+        else if (input.equals("special") || input.equals("sp")){
           s = p.specialAttack(enemies.get(0));
-          TextBox(16,20,40,3,s);
         }
-        else if(input.startsWith("su") || input.startsWith("support")){
-          String num = input.replaceAll("[^1-9]","");
-          int player;
-          if (num.length() != 0){player = Integer.parseInt(input);}
-          else{player = whichPlayer;}
-          if (player == whichPlayer){s = p.support();}
-          else if (player == 0){s = p.support(party.get(0));}
-          else if (player == 1){s = p.support(party.get(1));}
-          else if (player == 2){s = p.support(party.get(2));}
-          else if (player == 3){s = p.support(party.get(3));}
-          else {s = p.support();}
-          TextBox(16,20,40,3,s);
+		
+		//SUPPORT
+        else if (input.startsWith("su") || input.startsWith("support")){
+		  boolean done = false; //make sure only 1 adventurer can be supported at a time.
+		  for (Adventurer other : party) {
+			if (input.toLowerCase().contains(other.getName().toLowerCase()) && ! done) {
+			  s = p.support(other);
+			  done = true;
+			}
+		  }
+		  //support self if there was a typo or if the input was of an adventurer not in the party or if there was no other name in input
+		  if (! done) s = p.support(); 
         }
+		
+		TextBox(16,20,40,3,s); //record the event
 
         //You should decide when you want to re-ask for user input
         //If no errors:
@@ -207,13 +216,13 @@ public class Game{
         if(whichPlayer < party.size()){
           //This is a player turn.
           //Decide where to draw the following prompt:
-          String prompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
+          String prompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/support/support other)/quit";
           TextBox(27,2,78,1,prompt);
         }
         else{
           //This is after the player's turn, and allows the user to see the enemy turn
           //Decide where to draw the following prompt:
-          String prompt = "press enter to see monster's turn";
+          String prompt = "Press enter to see the enemy's turn.";
           TextBox(27,2,78,1,prompt);
 
           partyTurn = false;
@@ -221,8 +230,9 @@ public class Game{
         }
         //done with one party member
       }
-      else{
-        //not the party turn!
+	  
+	  //not the party turn!
+      else{ 
 
         //enemy attacks a randomly chosen person with a randomly chosen attack.
 
@@ -239,11 +249,11 @@ public class Game{
 
 
         //Decide where to draw the following prompt:
-        String prompt = "press enter to see next turn";
+        String prompt = "Press enter to see the enemy's turn.";
         TextBox(27,2,78,1,prompt);
 
         whichOpponent++;
-      }//end of one enemy.
+      } //end of one enemy's turn.
 
       //modify this if statement.
       if(!partyTurn && whichOpponent >= enemies.size()){
@@ -253,7 +263,7 @@ public class Game{
         turn++;
         partyTurn=true;
         //display this prompt before player's turn
-        String prompt = "Enter command for " + party.get(whichPlayer)+": attack/special/quit";
+        String prompt = "Enter command for " + party.get(whichPlayer)+": attack/special/support/support other)/quit";
         TextBox(27,2,78,1,prompt);
       }
 
