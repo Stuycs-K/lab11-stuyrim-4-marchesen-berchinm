@@ -28,7 +28,7 @@ Make a clear list of features that work/don't work
 
 ### Crossbow Warrior
 
-*Can occasionally get a really good shot, but also misses the target completely on occasion*
+*Can occasionally get a really good shot, but also misses the target completely sometimes*
 
 **Attack**: Bowshot - deals 0 damage (10% chance) or 4-7 damage (90% chance). Also restores 2 special to self.
 
@@ -76,7 +76,7 @@ Make a clear list of features that work/don't work
 
 **Attack**: Shoots lightning - deals 50% of opponent's health or 5 HP depending on which is higher
 
-**Special Attack**: Huge lightning bolt -- opponent goes to 1 HP automatically (5 power)
+**Special Attack**: Huge lightning bolt - opponent goes to 1 HP automatically (5 power)
 
 **Initial Special**: 0
 
