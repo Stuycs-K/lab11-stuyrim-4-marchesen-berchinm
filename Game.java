@@ -140,7 +140,43 @@ public class Game{
     TextBox(29,2,78,1,"");
     return input;
   }
-
+  
+  public static String chooseAction(Adventurer enemy, ArrayList<Adventurer> enemies, ArrayList<Adventurer> party) {
+	
+	//HEAL
+	int healChance = (int) (enemy.getmaxHP() - enemy.getHP()) / 2;
+	int useHeal = (int) (Math.random() * 100);
+	if (useHeal <= healChance) {
+	  return enemy.support();
+	}
+	
+	//SPECIAL ATTACK
+	int specialChance = (int) (enemy.getSpecial() * 100 / enemy.getSpecialMax()); 
+	int useSpecial = (int) (Math.random() * 100);
+	if (useSpecial <= specialChance) {
+	  return enemy.specialAttack(chooseTarget(party));
+	}
+	
+	//HEAL TEAMMATE
+	for (Adventurer other : enemies) {
+      if (other != enemy) { //comparing references is fine here. 
+	    int helpChance = (int) (other.getmaxHP() - other.getHP()) / 2;
+		int help = (int) (Math.random() * 100);
+		if (help <= helpChance) {
+		  return enemy.support(other);
+		}
+	  }
+	}
+	
+	//REGULAR ATTACK
+	return enemy.attack(chooseTarget(party));
+	
+  }
+  
+  public static Adventurer chooseTarget(ArrayList<Adventurer> party) {
+	return party.get( (int) (Math.random() * party.size()));
+  }
+  
   public static void quit(){
     Text.reset();
     Text.showCursor();
@@ -237,6 +273,14 @@ public class Game{
 		  if (! done) s = p.support(); 
         }
 		
+		//INVALID INPUT
+		else {
+		  s = "Invalid input! Try again.";
+		  TextBox(16,20,40,3,s); //let the user know the input was invalid
+		  continue; //don't update the player turn; ask the same player for new input
+		}
+		
+		
 		TextBox(16,20,40,3,s); //record the event
 		//You should decide when you want to re-ask for user input.
 		
@@ -274,20 +318,15 @@ public class Game{
 	  
 	  //--------------------------------ENEMY-TURN--------------------------------//
 	  
-      else{ 
+      else { 
 
         //enemy attacks a randomly chosen person with a randomly chosen attack.
 
-        if (enemies.size() == 1){ // what a single boss would do
+        //if (enemies.size() == 1){ // what a single boss would do
           Adventurer enemy = enemies.get(whichOpponent);
-          Adventurer randHero = party.get((int)(4 * Math.random()));
-          int randAttack = (int)(3 * Math.random());
-          String enemyS;
-          if (randAttack == 0){enemyS = enemy.attack(randHero);}
-          else if (randAttack == 1){enemyS = enemy.support();}
-          else{enemyS = enemy.specialAttack(randHero);}
+          String enemyS = chooseAction(enemy, enemies, party);
           TextBox(16,20,40,3,enemyS);
-        }
+        //}
 
 
         //Decide where to draw the following prompt:
