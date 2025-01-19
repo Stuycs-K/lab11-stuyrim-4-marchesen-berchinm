@@ -28,11 +28,13 @@ Make a clear list of features that work/don't work
 
 ### Crossbow Warrior
 
+*Can occasionally get a really good shot, but also misses the target completely on occasion*
+
 **Attack**: Bowshot - deals 0 damage (10% chance) or 4-7 damage (90% chance). Also restores 2 special to self.
 
-**Special**: Focus
-
 **SpecialAttack**: Headshot - 0 damage (20% chance) or 12-18 damage (80% chance) (5 focus)
+
+**Special**: Focus
 
 **Initial Special**: 2
 
@@ -52,9 +54,9 @@ Make a clear list of features that work/don't work
 
 **Attack**: Slice - deals 4-5 or 8-9 damage (20% critical hit rate)
 
-**Special Resource**: Energy
-
 **Special Attack**: Monster Slice - deals 0-1 or 20-21 damage (50% crit rate) (5 energy)
+
+**Special Resource**: Energy
 
 **Initial Special**: 3
 
@@ -65,3 +67,23 @@ Make a clear list of features that work/don't work
 **Support Other**: Throw Pie - gives -1 or 2-3 health, -1 or 2-3 energy (77% crit rate)
 
 **Max HP**: 30
+
+--
+
+### Boss
+
+*Always works alone; pretty strong*
+
+**Attack**: Shoots lightning - deals 50% of opponent's health or 5 HP depending on which is higher
+
+**Special Attack**: Huge lightning bolt -- opponent goes to 1 HP automatically (5 power)
+
+**Initial Special**: 0
+
+**Special Resource**: Power
+
+**Max Special**: 10
+
+**Support**: Take a nap - gains 10 health and 10 power
+
+**Max HP**: 100
