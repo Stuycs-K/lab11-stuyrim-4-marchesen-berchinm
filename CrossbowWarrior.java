@@ -1,6 +1,10 @@
 public class CrossbowWarrior extends Adventurer{
+  
+  //-----------------------------------------------------INSTANCE-VARIABLES-----------------------------------------------------//
   int focus, maxFocus;
 
+  //-----------------------------------------------------CONSTRUCTORS-----------------------------------------------------//
+  
   public CrossbowWarrior() {
     this("Marlene");
   }
@@ -10,6 +14,8 @@ public class CrossbowWarrior extends Adventurer{
 	focus = 2;
 	maxFocus = 8;
   }
+  
+  //-----------------------------------------------------ACCESSOR-AND-MUTATOR-METHODS-----------------------------------------------------//
 
   public String getSpecialName(){
     return "focus";
@@ -34,6 +40,9 @@ public class CrossbowWarrior extends Adventurer{
   public int getSpecialMax(){
     return maxFocus;
   }
+  
+  
+  //-----------------------------------------------------ACTIONS-----------------------------------------------------//
 
   public String attack(Adventurer other) {
     String event = getName() + " shot at " + other.getName() + " and ";
@@ -53,7 +62,7 @@ public class CrossbowWarrior extends Adventurer{
   
 
   public String specialAttack(Adventurer other) {
-    if (getSpecial() < 5) return "Not enough focus!";
+    if (getSpecial() < 5) return getName() + " did not have enough focus for a headshot. Instead, " + attack(other);
 	
 	setSpecial(getSpecial() - 5);
 	String event = getName() + " focused, shot at " + other.getName() + "'s head, and ";
