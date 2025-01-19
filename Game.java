@@ -1,15 +1,35 @@
 import java.util.*;
 
 public class Game{
+  
+  //-----------------------------------------------------FORMATTING-VARIABLES-----------------------------------------------------//
   private static final int WIDTH = 80;
   private static final int HEIGHT = 30;
   private static final int BORDER_COLOR = Text.BLACK;
   private static final int BORDER_BACKGROUND = Text.WHITE + Text.BACKGROUND;
 
+  //-----------------------------------------------------MAIN-----------------------------------------------------//
   public static void main(String[] args) {
     run();
   }
 
+  //-----------------------------------------------------DISPLAY-----------------------------------------------------//
+  
+  
+  //<<-----'MAIN'----->>//
+  
+  //Display the party and enemies
+  //Do not write over the blank areas where text will appear.
+  //Place the cursor at the place where the user will by typing their input at the end of this method.
+  public static void drawScreen(ArrayList<Adventurer> party, ArrayList<Adventurer> enemies){
+    drawBackground();
+    drawParty(party, 22);
+    drawParty(enemies, 3);
+  }
+  
+  
+  //<<-----BACKGROUND----->>//
+  
   //Display the borders of your screen that will not change.
   //Do not write over the blank areas where text will appear or parties will appear.
   public static void drawBackground(){
@@ -37,19 +57,30 @@ public class Game{
     System.out.print("╯");
     Text.go(29,2);
     System.out.print("> ");
-    return;
   }
-
-  //Display a line of text starting at
-  //(columns and rows start at 1 (not zero) in the terminal)
-  //use this method in your other text drawing methods to make things simpler.
-  public static void drawText(String s, int startRow, int startCol){
-    Text.go(startRow, startCol);
-    System.out.print(s);
-    Text.go(29,4);
-    return;
+  
+  
+  //<<-----TEXT----->>//
+  
+  /*Display a List of 2-4 adventurers on the rows row through row+3 (4 rows max)
+    *Should include Name HP and Special on 3 separate lines.
+    *Note there is one blank row reserved for your use if you choose.
+    *Format:
+    *Bob          Amy        Jun
+    *HP: 10       HP: 15     HP:19
+    *Caffeine: 20 Mana: 10   Snark: 1
+    * ***THIS ROW INTENTIONALLY LEFT BLANK***
+    */
+  public static void drawParty(ArrayList<Adventurer> party, int startRow){
+    for (int i = 0; i < party.size(); i++){
+      Adventurer p = party.get(i);
+      TextBox(startRow, 3+20*i, 15, 1, p.getName());
+      TextBox(startRow+1, 3+20*i, 15, 1, colorByPercent(p.getHP(), p.getmaxHP()));
+	  Text.reset(); //in case of colorized HP
+      TextBox(startRow+2, 3+20*i, 15, 1, p.getSpecialName() + ": " + p.getSpecial() + "/" + p.getSpecialMax());
+    }
   }
-
+  
   public static void TextBox(int row, int col, int width, int height, String str){
     int charsPrinted = 0;
     int rowNum = 0;
@@ -68,32 +99,17 @@ public class Game{
     Text.go(29,4);
     return;
   }
-
-    //return a random adventurer (choose between all available subclasses)
-    //feel free to overload this method to allow specific names/stats.
-  public static Adventurer createRandomAdventurer(){
-    return new CodeWarrior("Bob"+(int)(Math.random()*100));
+  
+  //Display a line of text starting at
+  //(columns and rows start at 1 (not zero) in the terminal)
+  //use this method in your other text drawing methods to make things simpler.
+  public static void drawText(String s, int startRow, int startCol){
+    Text.go(startRow, startCol);
+    System.out.print(s);
+    Text.go(29,4);
+    return;
   }
-
-    /*Display a List of 2-4 adventurers on the rows row through row+3 (4 rows max)
-    *Should include Name HP and Special on 3 separate lines.
-    *Note there is one blank row reserved for your use if you choose.
-    *Format:
-    *Bob          Amy        Jun
-    *HP: 10       HP: 15     HP:19
-    *Caffeine: 20 Mana: 10   Snark: 1
-    * ***THIS ROW INTENTIONALLY LEFT BLANK***
-    */
-  public static void drawParty(ArrayList<Adventurer> party, int startRow){
-    for (int i = 0; i < party.size(); i++){
-      Adventurer p = party.get(i);
-      TextBox(startRow, 3+20*i, 15, 1, p.getName());
-      TextBox(startRow+1, 3+20*i, 15, 1, colorByPercent(p.getHP(), p.getmaxHP()));
-	  Text.reset(); //in case of colorized HP
-      TextBox(startRow+2, 3+20*i, 15, 1, p.getSpecialName() + ": " + p.getSpecial() + "/" + p.getSpecialMax());
-    }
-  }
-
+  
   //Use this to create a colorized number string based on the % compared to the max value.
   public static String colorByPercent(int hp, int maxHP){
     String output = "HP: " + String.format("%2s", hp+"")+"/"+String.format("%2s", maxHP+"");
@@ -107,14 +123,14 @@ public class Game{
     return output;
   }
 
-  //Display the party and enemies
-  //Do not write over the blank areas where text will appear.
-  //Place the cursor at the place where the user will by typing their input at the end of this method.
-  public static void drawScreen(ArrayList<Adventurer> party, ArrayList<Adventurer> enemies){
-    drawBackground();
-    drawParty(party, 22);
-    drawParty(enemies, 3);
-    return;
+
+
+  //-----------------------------------------------------HELPERS-----------------------------------------------------//
+  
+  //return a random adventurer (choose between all available subclasses)
+  //feel free to overload this method to allow specific names/stats.
+  public static Adventurer createRandomAdventurer(){
+    return new CodeWarrior("Bob"+(int)(Math.random()*100));
   }
 
   public static String userInput(Scanner in){
@@ -131,19 +147,25 @@ public class Game{
     Text.go(32,1);
 	System.exit(0);
   }
-
+  
+  //-----------------------------------------------------RUN-GAME-----------------------------------------------------//
+  
   public static void run(){
-    //Clear and initialize
+	
+    //<<-----INITIALIZE----->>//
+	
     Text.hideCursor();
     Text.clear();
-
     boolean partyTurn = true;
     int whichPlayer = 0; //player from party whose turn it is
     int whichOpponent = 0; //opponent whose turn it is
     int turn = 0;
     String input = "";//blank to get into the main loop.
     Scanner in = new Scanner(System.in);
+	
 
+	//<<-----PARTY-SETUP----->>//
+	
     //Adventurers you control:
     //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
@@ -160,8 +182,10 @@ public class Game{
     enemies.add(new Boss());
 
     drawScreen(party, enemies); //initial state.
-
-    //Main loop
+	
+	
+	//<<-----MAIN-LOOP-SETUP----->>//
+	
     //display this prompt at the start of the game.
     String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/support/support other)/quit";
     TextBox(27,2,78,1,preprompt);
@@ -173,13 +197,19 @@ public class Game{
 
       //Read user input
       input = userInput(in);
-
-      //display event based on last turn's input
+	  
+	  
+	  
+	  //--------------------------------PARTY-TURN--------------------------------//
+	  
       if(partyTurn){
-		  
-        //Process user input for the last Adventurer:
+		
         String s = null; //the event of this turn, which will be defined and printed later
         Adventurer p = party.get(whichPlayer); //whose turn it is
+		
+		
+		
+		//<<-----DEFINE-PLAYER-ACTION----->>//
 		
 		//QUIT
 		if (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit")) quit();
@@ -208,18 +238,23 @@ public class Game{
         }
 		
 		TextBox(16,20,40,3,s); //record the event
-
-        //You should decide when you want to re-ask for user input
+		//You should decide when you want to re-ask for user input.
+		
+		
+		
+		//<<-----UPDATE-TURN----->>//
+		
         //If no errors:
         whichPlayer++;
 
-        if(whichPlayer < party.size()){
+        if (whichPlayer < party.size()) {
           //This is a player turn.
           //Decide where to draw the following prompt:
           String prompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/support/support other)/quit";
           TextBox(27,2,78,1,prompt);
         }
-        else{
+		
+        else {
           //This is after the player's turn, and allows the user to see the enemy turn
           //Decide where to draw the following prompt:
           String prompt = "Press enter to see the enemy's turn.";
@@ -228,10 +263,17 @@ public class Game{
           partyTurn = false;
           whichOpponent = 0;
         }
-        //done with one party member
+		
+		
+        //END OF ONE PARTY MEMEBER'S TURN.
       }
 	  
-	  //not the party turn!
+	  //END OF PARTY TURN.
+	  
+	  
+	  
+	  //--------------------------------ENEMY-TURN--------------------------------//
+	  
       else{ 
 
         //enemy attacks a randomly chosen person with a randomly chosen attack.
