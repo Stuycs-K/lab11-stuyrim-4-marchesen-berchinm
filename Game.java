@@ -43,7 +43,7 @@ public class Game{
   //Display a line of text starting at
   //(columns and rows start at 1 (not zero) in the terminal)
   //use this method in your other text drawing methods to make things simpler.
-  public static void drawText(String s,int startRow, int startCol){
+  public static void drawText(String s, int startRow, int startCol){
     Text.go(startRow, startCol);
     System.out.print(s);
     Text.go(29,4);
@@ -84,23 +84,26 @@ public class Game{
     *Caffeine: 20 Mana: 10   Snark: 1
     * ***THIS ROW INTENTIONALLY LEFT BLANK***
     */
-  public static void drawParty(ArrayList<Adventurer> party,int startRow){
-    String names = "", HPs = "", specials = "";
+  public static void drawParty(ArrayList<Adventurer> party, int startRow){
     for (int i = 0; i < party.size(); i++){
       Adventurer p = party.get(i);
       TextBox(startRow, 3+20*i, 15, 1, p.getName());
-      TextBox(startRow+1, 3+20*i, 15, 1, "HP: " + p.getHP() + "/" + p.getmaxHP());
+      TextBox(startRow+1, 3+20*i, 15, 1, colorByPercent(p.getHP(), p.getmaxHP()));
+	  Text.reset(); //in case of colorized HP
       TextBox(startRow+2, 3+20*i, 15, 1, p.getSpecialName() + ": " + p.getSpecial() + "/" + p.getSpecialMax());
     }
   }
 
   //Use this to create a colorized number string based on the % compared to the max value.
   public static String colorByPercent(int hp, int maxHP){
-    String output = String.format("%2s", hp+"")+"/"+String.format("%2s", maxHP+"");
+    String output = "HP: " + String.format("%2s", hp+"")+"/"+String.format("%2s", maxHP+"");
     //COLORIZE THE OUTPUT IF HIGH/LOW:
     // under 25% : red
     // under 75% : yellow
     // otherwise : white
+	int percent = hp * 100 / maxHP;
+	if (percent < 25) output = Text.colorize(output, Text.RED);
+	else if (percent < 75) output = Text.colorize(output, Text.YELLOW);
     return output;
   }
 
@@ -144,7 +147,7 @@ public class Game{
         //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
     ArrayList<Adventurer> party = new ArrayList<Adventurer>();
     party.add(new SwordWarrior("Nick"));
-    party.add(new CodeWarrior("Rick"));
+    party.add(new CrossbowWarrior("Rick"));
     party.add(new SwordWarrior("Mick"));
     party.add(new CodeWarrior("Wick", 27));
 
@@ -159,7 +162,7 @@ public class Game{
 
     //Main loop
     //display this prompt at the start of the game.
-    String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/quit";
+    String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/support/support(other)/quit";
     TextBox(27,2,78,1,preprompt);
 
     while(!(input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
