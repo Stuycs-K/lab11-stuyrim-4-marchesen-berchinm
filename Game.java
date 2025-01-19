@@ -40,18 +40,24 @@ public class Game{
     //display this prompt at the start of the game.
     String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/support/support other)/quit";
     TextBox(27,2,78,1,preprompt);
+	
+	
+	//<<-----MAIN-LOOP----->>//
 
-    while(!(input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit"))){
+    while(party.size() > 0 && enemies.size() > 0){
 
       //debug statment
       TextBox(26,2,78,1,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
 
       //Read user input
       input = userInput(in);
+	  String s; //the event of a turn
 	  
-	  if(partyTurn){
+	  
+	  //<<-----PARTY-TURN----->>//
+	  
+	  if (partyTurn) {
 		
-        String s; //the event of this turn, which will be defined and printed later
         Adventurer p = party.get(whichPlayer); //whose turn it is
 		s = playerAction(input, p, party, enemies);
 		TextBox(16,20,40,3,s); //record the event
@@ -65,13 +71,16 @@ public class Game{
 		
       }
 	  
+	  
+	  //<<-----ENEMY-TURN----->>//
+	  
 	  else { 
 
         //enemy attacks a randomly chosen person with a randomly chosen attack.
 
         Adventurer enemy = enemies.get(whichOpponent);
-        String enemyS = chooseAction(enemy, enemies, party);
-        TextBox(16,20,40,3,enemyS);
+        s = chooseAction(enemy, enemies, party);
+        TextBox(16,20,40,3,s);
 
         //Decide where to draw the following prompt:
         String prompt = "Press enter to see the enemy's turn.";
@@ -84,11 +93,17 @@ public class Game{
 		
       }
 	  
+	  
+	  //<<-----AFTER-A-TURN----->>//
+	  
 	  //display the updated screen after input has been processed.
       drawScreen(party, enemies);
 	  
 	  //END OF MAIN GAME LOOP
     }
+	
+	
+	//<<-----TEAM-DEFEATED----->>//
 
     //After quit reset things:
     quit();
@@ -223,6 +238,14 @@ public class Game{
     return input;
   }
   
+  public static String checkPulse(Adventurer a, ArrayList<Adventurer> team) {
+	if (a.getHP() <= 0) {
+	  team.remove(a);
+	  return " " + a.getName() + " has fallen!";
+	}
+	return "";
+  }
+  
   public static void quit(){
     Text.reset();
     Text.showCursor();
@@ -242,15 +265,16 @@ public class Game{
   }
   
   public static String playerAction(String input, Adventurer p, ArrayList<Adventurer> party, ArrayList<Adventurer> enemies) {
+	Adventurer target = enemies.get((int) (Math.random() * enemies.size()));
 	//QUIT
 	if (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit")) quit();
 	//ATTACK
     else if (input.equals("attack") || input.equals("a")){
-      return p.attack(enemies.get(0));
+      return p.attack(target) + checkPulse(target, enemies);
     }	
 	//SPECIAL ATTACK
 	else if (input.equals("special") || input.equals("sp")){
-	  return p.specialAttack(enemies.get(0));
+	  return p.specialAttack(target) + checkPulse(target, enemies);
 	}
 	//SUPPORT
 	else if (input.startsWith("su") || input.startsWith("support")){
@@ -322,6 +346,8 @@ public class Game{
   
   public static String chooseAction(Adventurer enemy, ArrayList<Adventurer> enemies, ArrayList<Adventurer> party) {
 	
+	Adventurer target = chooseTarget(party);
+	
 	//HEAL
 	int healChance = (int) (enemy.getmaxHP() - enemy.getHP()) / 2;
 	int useHeal = (int) (Math.random() * 100);
@@ -333,7 +359,7 @@ public class Game{
 	int specialChance = (int) (enemy.getSpecial() * 100 / enemy.getSpecialMax()); 
 	int useSpecial = (int) (Math.random() * 100);
 	if (useSpecial <= specialChance) {
-	  return enemy.specialAttack(chooseTarget(party));
+	  return enemy.specialAttack(target) + checkPulse(target, party);
 	}
 	
 	//HEAL TEAMMATE
@@ -348,7 +374,7 @@ public class Game{
 	}
 	
 	//REGULAR ATTACK
-	return enemy.attack(chooseTarget(party));
+	return enemy.attack(target) + checkPulse(target, party);
 	
   }
   
