@@ -241,6 +241,7 @@ public class Game{
   public static String checkPulse(Adventurer a, ArrayList<Adventurer> team) {
 	if (a.getHP() <= 0) {
 	  team.remove(a);
+	  Text.clear(); //screen will be drawn automatically later
 	  return " " + a.getName() + " has fallen!";
 	}
 	return "";
