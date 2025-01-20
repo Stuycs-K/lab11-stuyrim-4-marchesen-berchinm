@@ -37,7 +37,7 @@ public class Game{
 	  //<<-----MAIN-LOOP-SETUP----->>//
 
     String preprompt = "Enter command for " + party.get(whichPlayer) + ": attack/special/support/support other)/quit";
-    TextBox(27,2,78,1,preprompt);
+    displayPrompt(preprompt);
 
 	  //<<-----MAIN-LOOP----->>//
 
@@ -73,7 +73,7 @@ public class Game{
 
         //Decide where to draw the following prompt:
         String prompt = "Press enter to see the enemy's turn.";
-        TextBox(27,2,78,1,prompt);
+        displayPrompt(prompt);
 
         whichOpponent++;
 		partyTurn = updateEnemyTurn(whichOpponent, party, enemies);
@@ -153,21 +153,11 @@ public class Game{
       drawText(p.getSpecialName() + ": " + p.getSpecial() + "/" + p.getSpecialMax(),startRow+2, 3+20*i);
     }
   }
-
-  public static void TextBox(int row, int col, int width, int height, String str){
-    int charsPrinted = 0;
-    int rowNum = 0;
-    String text = str;
-    for (int i = 0; i < width * height - str.length(); i++){
-      text += " "; // make it a perfect rectangular string (spaces at end to replace)
-    }
-    while (charsPrinted < text.length()){
-      Text.go(row+rowNum,col); // keep going to next row after printing width chars
-      if (charsPrinted + width < text.length()) {System.out.print(text.substring(charsPrinted,charsPrinted+width));}
-      else {System.out.print(text.substring(charsPrinted));} // watch for out-of-range error
-      charsPrinted += width; // increment
-      rowNum++;
-    }
+  
+  //Display a line of text starting at startRow, startCol
+  public static void drawText(String s, int startRow, int startCol){
+    Text.go(startRow, startCol);
+    System.out.print(s);
     Text.go(29,4);
     return;
   }
@@ -190,16 +180,19 @@ public class Game{
 	Text.go(29,4);
 	return;
   }
-
-  //Display a line of text starting at startRow, startCol
-  public static void drawText(String s, int startRow, int startCol){
-    Text.go(startRow, startCol);
-    System.out.print(s);
-    Text.go(29,4);
-    return;
+  
+  public static void displayPrompt(String prompt) {
+	eraseBoard(27, 28, 2, 80);
+	Text.go(27, 2);
+	System.out.print(prompt);
+	Text.go(29,4);
   }
   
-  public static void eraseBoard(int startRow, int endRow, int startCol, int endCol) { //erases all text in width * height square
+  public static void clearInput() {
+	eraseBoard(29, 30, 2, 80);
+  }
+  
+  public static void eraseBoard(int startRow, int endRow, int startCol, int endCol) { //erases all text in width * height square. Ends not inclusive
     String row = "";
 	for (int i = 0; i < endCol - startCol; i++) {
 	  row += " ";
@@ -231,7 +224,7 @@ public class Game{
     Text.go(29,4);
     Text.showCursor();
     String input = in.nextLine();
-    TextBox(29,2,78,1,"");
+    clearInput();
     return input;
   }
 
@@ -304,7 +297,7 @@ public class Game{
   	  prompt = "Press enter to see the enemy's turn.";
   	  partyTurn = false;
   	}
-  	TextBox(27,2,78,1,prompt);
+  	displayPrompt(prompt);
   	return partyTurn;
   }
 
@@ -385,7 +378,7 @@ public class Game{
   	  partyTurn=true;
   	  //display this prompt before player's turn
   	  String prompt = "Enter command for " + party.get(0)+": attack/special/support/support other)/quit";
-  	  TextBox(27,2,78,1,prompt);
+  	  displayPrompt(prompt);
   	}
   	return partyTurn;
   }
