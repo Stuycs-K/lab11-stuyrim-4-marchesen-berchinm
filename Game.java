@@ -45,6 +45,7 @@ public class Game{
 
       //Read user input
       input = userInput(in);
+	  if (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit")) quit();
       String s; // this holds the event of a turn
 
 	    //<<-----PARTY-TURN----->>//
@@ -72,7 +73,7 @@ public class Game{
         TextBox(10,10,s);
 
         //Decide where to draw the following prompt:
-        String prompt = "Press enter to see the enemy's turn.";
+        String prompt = "Press enter to see the enemy's turn or q to quit.";
         displayPrompt(prompt);
 
         whichOpponent++;
@@ -164,20 +165,24 @@ public class Game{
   
   public static void TextBox(int row, int col, String str) { //used to display actions/events
 	eraseBoard(7, 20, 2, 80);
+	//format non-death-message lines
 	int lineLength = 80 - col*2; //this is how long one line of text from str can be
-	while (str.length() > lineLength) { //for all except the last line
-	  String thisLine = str.substring(0, lineLength);
-	  thisLine = thisLine.substring(0, thisLine.lastIndexOf(" ")); //make sure only full words go into a line
+	while (str.length() > 0) { 
+	  //thisLine = whole string; will change unless this is the last line
+	  String thisLine = str;
+	  if (str.length() > lineLength) { //for all except the last line
+	    thisLine = str.substring(0, lineLength);
+	    thisLine = thisLine.substring(0, thisLine.lastIndexOf(" ")); //make sure only full words go into a line
+		str = str.substring(thisLine.length() + 1); //cut out this line plus the whitespace after it
+	  }
+	  else { //last line
+		str = "";
+	  }
 	  int paddingToCenter = (80 - col*2 - thisLine.length()) / 2; //used to center the last line
 	  Text.go(row, col+paddingToCenter);
 	  System.out.print(thisLine);
 	  row++;
-	  str = str.substring(thisLine.length() + 1); //cut out this line plus the whitespace after it
 	}
-	//handle last line
-	int paddingToCenter = (80 - col*2 - str.length()) / 2; //used to center the line
-	Text.go(row, col+paddingToCenter);
-	System.out.print(str);
 	//go back to input
 	Text.go(29,4);
 	return;
@@ -258,12 +263,10 @@ public class Game{
 
   public static String playerAction(String input, Adventurer p, ArrayList<Adventurer> party, ArrayList<Adventurer> enemies) {
   	Adventurer target = enemies.get((int) (Math.random() * enemies.size()));
-  	//QUIT
-  	if (input.equalsIgnoreCase("q") || input.equalsIgnoreCase("quit")) quit();
   	//ATTACK
-      else if (input.equals("attack") || input.equals("a")){
-        return p.attack(target) + checkPulse(target, enemies);
-      }
+    if (input.equals("attack") || input.equals("a")){
+      return p.attack(target) + checkPulse(target, enemies);
+    }
   	//SPECIAL ATTACK
   	else if (input.equals("special") || input.equals("sp")){
   	  return p.specialAttack(target) + checkPulse(target, enemies);
@@ -296,7 +299,7 @@ public class Game{
   	else {
   	  //This is after the player's turn, and allows the user to see the enemy turn
   	  //Decide where to draw the following prompt:
-  	  prompt = "Press enter to see the enemy's turn.";
+  	  prompt = "Press enter to see the enemy's turn or q to quit.";
   	  partyTurn = false;
   	}
   	displayPrompt(prompt);
