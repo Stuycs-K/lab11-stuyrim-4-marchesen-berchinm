@@ -92,7 +92,13 @@ public class Game{
 
     //<<-----AFTER-GAME----->>//
 
-    quit();
+    if (party.size() > 0) {
+	  partyWin();
+	}
+	else {
+	  enemyWin();
+	}
+	quit();
 
   }
 
@@ -305,6 +311,11 @@ public class Game{
   	displayPrompt(prompt);
   	return partyTurn;
   }
+  
+  public static void partyWin() {
+	displayPrompt("");
+	TextBox(10,10,Text.colorize("YOU WIN!!!", Text.CYAN, Text.BRIGHT, Text.BOLD));
+  }
 
   //-----------------------------------------------------ENEMY-----------------------------------------------------//
 
@@ -382,10 +393,17 @@ public class Game{
   	  //THIS BLOCK IS TO END THE ENEMY TURN
   	  partyTurn=true;
   	  //display this prompt before player's turn
-  	  String prompt = "Enter command for " + party.get(0)+": attack/special/support/support other)/quit";
-  	  displayPrompt(prompt);
+	  if (party.size() > 0) { //game still hasn't been won
+  	    String prompt = "Enter command for " + party.get(0)+": attack/special/support/support other)/quit";
+  	    displayPrompt(prompt);
+	  }
   	}
   	return partyTurn;
+  }
+  
+  public static void enemyWin() {
+	displayPrompt("");
+	TextBox(10,10,Text.colorize("You lose :(", Text.BLUE, Text.BRIGHT, Text.BOLD));
   }
 
 }
