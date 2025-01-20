@@ -162,19 +162,21 @@ public class Game{
     return;
   }
   
-  public static void TextBox(int row, int col, String str) {
+  public static void TextBox(int row, int col, String str) { //used to display actions/events
 	eraseBoard(7, 20, 2, 80);
-	int lineLength = 80 - (col * 2); //this is how long one line of text from str can be
+	int lineLength = 80 - col*2; //this is how long one line of text from str can be
 	while (str.length() > lineLength) { //for all except the last line
 	  String thisLine = str.substring(0, lineLength);
 	  thisLine = thisLine.substring(0, thisLine.lastIndexOf(" ")); //make sure only full words go into a line
-	  Text.go(row, col);
+	  int paddingToCenter = (80 - col*2 - thisLine.length()) / 2; //used to center the last line
+	  Text.go(row, col+paddingToCenter);
 	  System.out.print(thisLine);
 	  row++;
 	  str = str.substring(thisLine.length() + 1); //cut out this line plus the whitespace after it
 	}
 	//handle last line
-	Text.go(row, col);
+	int paddingToCenter = (80 - col*2 - str.length()) / 2; //used to center the line
+	Text.go(row, col+paddingToCenter);
 	System.out.print(str);
 	//go back to input
 	Text.go(29,4);
@@ -232,7 +234,7 @@ public class Game{
   	if (a.getHP() <= 0) {
   	  team.remove(a);
   	  Text.clear(); //screen will be drawn automatically later
-  	  return " " + a.getName() + " has fallen!";
+  	  return Text.colorize(" " + a.getName() + " has fallen!", Text.MAGENTA);
   	}
   	return "";
   }
