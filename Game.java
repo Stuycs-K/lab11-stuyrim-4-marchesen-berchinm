@@ -30,7 +30,7 @@ public class Game{
 
 	  //<<-----SCREEN-SETUP----->>//
 
-	  Text.hideCursor();
+	Text.hideCursor();
     Text.clear();
     drawScreen(party, enemies); //initial state.
 
@@ -43,9 +43,6 @@ public class Game{
 
     while(party.size() > 0 && enemies.size() > 0){ // if a team is defeated, leave loop
 
-      //debug statment
-      TextBox(26,2,78,1,("input: "+input+" partyTurn:"+partyTurn+ " whichPlayer="+whichPlayer+ " whichOpp="+whichOpponent));
-
       //Read user input
       input = userInput(in);
       String s; // this holds the event of a turn
@@ -55,12 +52,12 @@ public class Game{
 	    if (partyTurn) {
 
         Adventurer p = party.get(whichPlayer); //whose turn it is
-		    s = playerAction(input, p, party, enemies);
-		    TextBox(16,20,40,3,s); //record the event
+		s = playerAction(input, p, party, enemies);
+		TextBox(10,10,s); //record the event
 
         whichPlayer++;
         partyTurn = updatePartyTurn(whichPlayer, party);
-		    if (!partyTurn) whichPlayer = 0;
+		if (!partyTurn) whichPlayer = 0;
         // end of one party member's turn
 
       }
@@ -72,15 +69,15 @@ public class Game{
         //enemy attacks a randomly chosen person with a randomly chosen attack.
         Adventurer enemy = enemies.get(whichOpponent);
         s = chooseAction(enemy, enemies, party);
-        TextBox(16,20,40,3,s);
+        TextBox(10,10,s);
 
         //Decide where to draw the following prompt:
         String prompt = "Press enter to see the enemy's turn.";
         TextBox(27,2,78,1,prompt);
 
         whichOpponent++;
-		    partyTurn = updateEnemyTurn(whichOpponent, party, enemies);
-		    if (partyTurn) whichOpponent = 0;
+		partyTurn = updateEnemyTurn(whichOpponent, party, enemies);
+		if (partyTurn) whichOpponent = 0;
         // end of one enemy's turn
 
       }
@@ -92,7 +89,7 @@ public class Game{
     } // end of main game loop
 
 
-    //<<-----AFTER-GAME-LOOP----->>//
+    //<<-----AFTER-GAME----->>//
 
     quit();
 
@@ -150,10 +147,10 @@ public class Game{
   public static void drawParty(ArrayList<Adventurer> party, int startRow){
     for (int i = 0; i < party.size(); i++){
       Adventurer p = party.get(i);
-      TextBox(startRow, 3+20*i, 15, 1, p.getName());
-      TextBox(startRow+1, 3+20*i, 15, 1, colorByPercent(p.getHP(), p.getmaxHP()));
-	    Text.reset(); //in case of colorized HP
-      TextBox(startRow+2, 3+20*i, 15, 1, p.getSpecialName() + ": " + p.getSpecial() + "/" + p.getSpecialMax());
+      drawText(p.getName(),startRow, 3+20*i);
+      drawText(colorByPercent(p.getHP(), p.getmaxHP()),startRow+1, 3+20*i);
+	  Text.reset(); //in case of colorized HP
+      drawText(p.getSpecialName() + ": " + p.getSpecial() + "/" + p.getSpecialMax(),startRow+2, 3+20*i);
     }
   }
 
@@ -164,7 +161,6 @@ public class Game{
     for (int i = 0; i < width * height - str.length(); i++){
       text += " "; // make it a perfect rectangular string (spaces at end to replace)
     }
-    if (text.length() > width * height){text = text.substring(0, width * height);} // cut off if box is too small
     while (charsPrinted < text.length()){
       Text.go(row+rowNum,col); // keep going to next row after printing width chars
       if (charsPrinted + width < text.length()) {System.out.print(text.substring(charsPrinted,charsPrinted+width));}
@@ -175,13 +171,44 @@ public class Game{
     Text.go(29,4);
     return;
   }
+  
+  public static void TextBox(int row, int col, String str) {
+	eraseBoard(7, 20, 2, 80);
+	int lineLength = 80 - (col * 2); //this is how long one line of text from str can be
+	while (str.length() > lineLength) { //for all except the last line
+	  String thisLine = str.substring(0, lineLength);
+	  thisLine = thisLine.substring(0, thisLine.lastIndexOf(" ")); //make sure only full words go into a line
+	  Text.go(row, col);
+	  System.out.print(thisLine);
+	  row++;
+	  str = str.substring(thisLine.length() + 1); //cut out this line plus the whitespace after it
+	}
+	//handle last line
+	Text.go(row, col);
+	System.out.print(str);
+	//go back to input
+	Text.go(29,4);
+	return;
+  }
 
-  //Display a line of text starting at
+  //Display a line of text starting at startRow, startCol
   public static void drawText(String s, int startRow, int startCol){
     Text.go(startRow, startCol);
     System.out.print(s);
     Text.go(29,4);
     return;
+  }
+  
+  public static void eraseBoard(int startRow, int endRow, int startCol, int endCol) { //erases all text in width * height square
+    String row = "";
+	for (int i = 0; i < endCol - startCol; i++) {
+	  row += " ";
+	}
+	for (int i = startRow; i < endRow; i++) {
+	  Text.go(i, startCol);
+	  System.out.print(row);
+	}
+	Text.go(29,4);
   }
 
   //Use this to create a colorized number string based on the % compared to the max value.
@@ -229,7 +256,7 @@ public class Game{
   //Adventurers you control:
   //Make an ArrayList of Adventurers and add 2-4 Adventurers to it.
   public static void setupParty(ArrayList<Adventurer> party) {
-	  party.add(new SwordWarrior("Nick"));
+	party.add(new SwordWarrior("Nick"));
     party.add(new CrossbowWarrior("Rick"));
     party.add(new CodeWarrior("Wick"));
   }
@@ -257,7 +284,7 @@ public class Game{
   	  return p.support();
   	}
   	//INVALID INPUT (else)
-  	TextBox(16,20,40,3,"Invalid input! Try again."); //let the user know the input was invalid
+  	TextBox(10,10,"Invalid input! Try again."); //let the user know the input was invalid
   	Scanner in = new Scanner(System.in);
   	input = userInput(in);
   	return playerAction(input, p, party, enemies);
